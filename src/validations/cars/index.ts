@@ -70,7 +70,7 @@ export const NewCarSchema = z.object({
     .max(250, { message: 'Description cannot exceed 250 characters' }),
 });
 
-type NewCarType = z.infer<typeof NewCarSchema>;
+export type NewCarType = z.infer<typeof NewCarSchema>;
 export interface NewCarFormType extends Partial<NewCarType> {
   form?: string | undefined;
 }

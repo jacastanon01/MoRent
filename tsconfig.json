@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Base Options: */
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",
@@ -39,5 +40,16 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "experimentalSpecifierResolution": "node",
+    // "experimentalResolver": true,
+    "transpileOnly": true,
+    "esm": true,
+    "compilerOptions": {
+      "module": "Node16",
+      "moduleResolution": "NodeNext"
+    }
+  }
 }

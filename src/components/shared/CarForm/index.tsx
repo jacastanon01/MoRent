@@ -22,7 +22,7 @@ const CarForm = ({ carData }: { carData?: any }) => {
   const action = carData ? 'Update' : 'Add';
   const [formState, setFormState] = useState<NewCarFormType>({
     ...carData,
-    carType: carData?.type,
+    carType: carData?.carType,
     year: carData?.year.toString(),
     fuelEfficiency: carData?.fuelEfficiency.toString(),
     capacity: carData?.capacity.toString(),
@@ -180,6 +180,7 @@ const CarForm = ({ carData }: { carData?: any }) => {
       lat: undefined,
       lng: undefined,
     }));
+    console.log(location, lat, lng);
     setLocation(location);
     setLat(lat.toString());
     setLng(lng.toString());
