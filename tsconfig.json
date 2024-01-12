@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "es2022",
+    "outDir": "./dist",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
@@ -44,12 +45,22 @@
   "ts-node": {
     "require": ["tsconfig-paths/register"],
     "experimentalSpecifierResolution": "node",
-    // "experimentalResolver": true,
+    "experimentalResolver": true,
     "transpileOnly": true,
     "esm": true,
     "compilerOptions": {
-      "module": "Node16",
-      "moduleResolution": "NodeNext"
+      "moduleResolution": "node",
+      "module": "esnext",
+      "target": "esnext",
+      "types": ["node"],
+      "esModuleInterop": true,
+      "noEmit": true
     }
+    // "compilerOptions": {
+    //   "extends": "ts-node/node16/tsconfig.json",
+    //   "module": "Node16",
+    //   "moduleResolution": "Node16",
+    //   "noEmit": true
+    // }
   }
 }

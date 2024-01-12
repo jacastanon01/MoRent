@@ -3,7 +3,7 @@ import {
   fuelEfficiencyUnits as fuelUnits,
   mutableCarTypes,
   mutableTransmissionTypes,
-} from '@/validations/cars/index.js';
+} from '../../src/validations/cars/index.js';
 import { colors, locationsArray } from './constants.js';
 import {
   getMakeModelAndImages,
