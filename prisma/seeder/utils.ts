@@ -12,7 +12,12 @@ import {
   colors,
   locationsArray,
 } from './constants';
-import { CarTypes, FuelEfficiencyUnits, Transmission } from '@prisma/client';
+import {
+  CarTypes,
+  FuelEfficiencyUnits,
+  Transmission,
+  User,
+} from '@prisma/client';
 import { db } from '@/server/db';
 
 const getRandomFromArray = <T>(arr: T[]): T | undefined => {
@@ -88,61 +93,76 @@ const getRandomThumbnail = (make: CarMakes): string[] | undefined => {
 };
 
 export const createCars = async () => {
-  for (let i = 0; i < 4; i++) {
-    const carBase = getMakeModelAndImages();
-    if (!carBase) {
-      throw Error('Error getting base car', carBase);
+  try {
+    await db.car.deleteMany();
+    const users: Pick<User, 'id'>[] = await db.user.findMany({
+      select: { id: true },
+    });
+    if (!users?.length) throw Error('No users!');
+
+    for (const { id } of users) {
+      for (let i = 0; i < 5; i++) {
+        try {
+          const carBase = getMakeModelAndImages();
+          if (!carBase) {
+            throw Error('Error getting base car', carBase);
+          }
+          const locationData = getRandomFromArray(locationsArray);
+          const fuelEfficiencyUnits = locationData?.location.includes('USA')
+            ? fuelUnits[0]
+            : fuelUnits[1];
+
+          const description = faker.lorem.paragraphs();
+
+          const { make, model, images } = carBase;
+
+          const locationId = await db.location.upsert({
+            select: {
+              id: true,
+            },
+            where: {
+              address: locationData?.location,
+            },
+            create: {
+              latitude: Number(locationData?.lat),
+              longitude: Number(locationData?.lng),
+              address: locationData?.location!,
+            },
+            update: {},
+          });
+          if (!locationId)
+            throw Error('Error creating location data ', locationId);
+
+          const newCar = {
+            make,
+            model,
+            images,
+            description,
+            fuelEfficiency: faker.number.int({ min: 10, max: 40 }),
+            fuelEfficiencyUnits: fuelEfficiencyUnits as FuelEfficiencyUnits,
+            rentPrice: getRandomNumByInterval(100, 1500, 50) ?? 500,
+            capacity: faker.number.int({ min: 2, max: 6 }),
+            color: String(getRandomFromArray(colors)),
+            year: faker.number.int({ min: 2000, max: 2024 }),
+            transmission: faker.helpers.arrayElement<Transmission>(
+              mutableTransmissionTypes,
+            ),
+            type: faker.helpers.arrayElement<CarTypes>(mutableCarTypes),
+            locationId: locationId.id,
+          };
+          if (!newCar) throw Error('Error constructing car ', newCar);
+
+          await db.car.create({
+            data: { ...newCar, addedById: id },
+          });
+        } catch (error: any) {
+          console.error('Error during iteration', error);
+          throw Error('Error during iteration', error.message);
+        }
+      }
     }
-    const locationData = getRandomFromArray(locationsArray);
-    const fuelEfficiencyUnits = locationData?.location.includes('USA')
-      ? fuelUnits[0]
-      : fuelUnits[1];
-
-    const description = faker.lorem.paragraphs();
-
-    const { make, model, images } = carBase;
-
-    try {
-      const locationId = await db.location.upsert({
-        select: {
-          id: true,
-        },
-        where: {
-          address: locationData?.location,
-        },
-        create: {
-          latitude: Number(locationData?.lat),
-          longitude: Number(locationData?.lng),
-          address: locationData?.location!,
-        },
-        update: {},
-      });
-      if (!locationId) throw Error('Error creating location data ', locationId);
-
-      const newCar = {
-        make,
-        model,
-        images,
-        description,
-        fuelEfficiency: faker.number.int({ min: 10, max: 40 }),
-        fuelEfficiencyUnits: fuelEfficiencyUnits as FuelEfficiencyUnits,
-        rentPrice: getRandomNumByInterval(100, 1500, 50) ?? 500,
-        capacity: faker.number.int({ min: 2, max: 6 }),
-        color: String(getRandomFromArray(colors)),
-        year: faker.number.int({ min: 2000, max: 2024 }),
-        transmission: faker.helpers.arrayElement<Transmission>(
-          mutableTransmissionTypes,
-        ),
-        type: faker.helpers.arrayElement<CarTypes>(mutableCarTypes),
-        locationId: locationId.id,
-      };
-      if (!newCar) throw Error('Error constructing car ', newCar);
-      console.log(newCar);
-      // await db.car.create({
-      //   data: { ...newCar, addedById: '123' },
-      // });
-    } catch (error: any) {
-      throw Error(error.message);
-    }
+  } catch (error: any) {
+    console.error('Top level error', error);
+    throw Error(error.message);
   }
 };

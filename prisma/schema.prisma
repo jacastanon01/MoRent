@@ -59,14 +59,14 @@ model Car {
   fuelEfficiencyUnit FuelEfficiencyUnits?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime?            @updatedAt
-  addedBy            User                 @relation(fields: [addedById], references: [id], name: "addedByUser")
+  addedBy            User                 @relation(fields: [addedById], references: [id], name: "addedByUser", onDelete: Cascade)
   addedById          String
   images             String[]
   rentalHistory      Rental[]
   reviews            RentalReview[]
   favoritedBy        User[]               @relation("favoritedByUsers")
   locationId         Int
-  location           Location             @relation(fields: [locationId], references: [id])
+  location           Location             @relation(fields: [locationId], references: [id], onDelete: Restrict)
 
   @@index([make, model, year], name: "carOverview")
 }
@@ -133,7 +133,7 @@ model Location {
   state         String?
   country       String?
   zip           String?
-  cars          Car[]
+  cars          Car[] 
   rentalPickups Rental[]
 
   // @@unique([city, state, zip])
@@ -143,7 +143,7 @@ model Location {
 
 model Rental {
   id             Int                @id @default(autoincrement())
-  car            Car                @relation(fields: [carId], references: [id])
+  car            Car                @relation(fields: [carId], references: [id], onDelete: Cascade)
   carId          Int
   rentedTo       User               @relation(fields: [userId], references: [id])
   userId         String
@@ -154,7 +154,7 @@ model Rental {
   endDate        DateTime           @db.Timestamptz()
   total          Float
   locationId     Int
-  pickUpLocation Location           @relation(fields: [locationId], references: [id])
+  pickUpLocation Location           @relation(fields: [locationId], references: [id], onDelete: Restrict)
   updatedAt      DateTime           @updatedAt
   createdAt      DateTime           @default(now())
 
@@ -166,7 +166,7 @@ model RentalReview {
   userId      String
   reviewedBy  User     @relation(fields: [userId], references: [id])
   carId       Int
-  car         Car      @relation(fields: [carId], references: [id])
+  car         Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
   rating      Float
   description String
   createdAt   DateTime @default(now())
