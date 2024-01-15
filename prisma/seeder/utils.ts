@@ -100,7 +100,7 @@ export const createCars = async () => {
     });
     if (!users?.length) throw Error('No users!');
 
-    for (const { id } of users) {
+    for (const { id } of users.slice(0, 10)) {
       for (let i = 0; i < 5; i++) {
         try {
           const carBase = getMakeModelAndImages();

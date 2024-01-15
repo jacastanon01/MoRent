@@ -133,7 +133,7 @@ model Location {
   state         String?
   country       String?
   zip           String?
-  cars          Car[] 
+  cars          Car[]
   rentalPickups Rental[]
 
   // @@unique([city, state, zip])
