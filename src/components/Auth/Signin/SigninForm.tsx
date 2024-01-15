@@ -2,9 +2,9 @@
 
 import { signIn } from 'next-auth/react';
 import React, { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ZodError } from 'zod';
+import { useRouter } from 'next/navigation';
 
 import { Button, FormInput, SigninError } from '../../shared';
 import GoogleLogo from './GoogleLogo';
@@ -32,28 +32,28 @@ const SigninForm = () => {
       return;
     }
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      email: validatedInput.data.email,
-      password: validatedInput.data.password,
-    });
-
-    if (res?.error) {
-      setFormErrors({
-        form: res.error,
+    startTransition(async () => {
+      const res = await signIn('credentials', {
+        redirect: false,
+        email: validatedInput.data.email,
+        password: validatedInput.data.password,
+        callbackUrl: '/',
       });
-      return;
-    }
-    if (res?.ok) {
-      router.push('/');
+
+      if (res?.error) {
+        setFormErrors({
+          form: res.error,
+        });
+      }
+
       router.refresh();
-    }
+    });
   }
 
-  async function handleTransition() {
+  async function handleProvider() {
     startTransition(async () => {
       try {
-        await signIn('google');
+        await signIn('google', { callbackUrl: '/' });
       } catch (e: any) {
         setFormErrors((prevState) => ({
           ...prevState,
@@ -74,6 +74,7 @@ const SigninForm = () => {
           <FormInput key={item} formKey={item} {...stateProps} />
         ))}
         <Button
+          disabled={isPending}
           className='mt-4 border-gray-300 font-medium shadow-md focus:ring-2 focus:ring-gray-500 focus:ring-offset-2'
           type='submit'
         >
@@ -89,8 +90,7 @@ const SigninForm = () => {
       <Button
         disabled={isPending}
         className='flex items-center rounded-lg border bg-white px-6 py-2 font-medium text-gray-800 shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-800 dark:text-white'
-        type='submit'
-        onClick={handleTransition}
+        onClick={handleProvider}
       >
         <GoogleLogo />
         <span className=' leading-normal'>Continue with Google</span>

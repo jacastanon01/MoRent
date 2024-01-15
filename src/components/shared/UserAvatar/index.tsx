@@ -23,7 +23,7 @@ function UserAvatar({
   return (
     <motion.div
       initial={{ rotateY: 180 }}
-      animate={{ rotateY: 360 }}
+      animate={{ rotateY: 360, transition: { duration: 0.4, delay: 0.2 } }}
       className='relative h-full w-full'
     >
       <Avatar className='relative h-full w-full shadow-md shadow-gray-300 dark:shadow-gray-600'>
