@@ -41,6 +41,10 @@ export const env = createEnv({
     BLOB_READ_WRITE_TOKEN: z.string(),
     STRIPE_SECRET_KEY: z.string(),
     STRIPE_WEBHOOK_SECRET: z.string(),
+    AWS_BUCKET_REGION: z.string(),
+    AWS_BUCKET_NAME: z.string(),
+    AWS_SUPER_ACCESS_KEY: z.string(),
+    AWS_SUPER_SECRET_ACCESS_KEY: z.string(),
   },
 
   /**
@@ -59,6 +63,10 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+    AWS_BUCKET_REGION: process.env.AWS_BUCKET_REGION,
+    AWS_SUPER_ACCESS_KEY: process.env.AWS_SUPER_ACCESS_KEY,
+    AWS_SUPER_SECRET_ACCESS_KEY: process.env.AWS_SUPER_SECRET_ACCESS_KEY,
     DATABASE_URL: process.env.DATABASE_URL,
     DIRECT_URL: process.env.DIRECT_URL,
     NODE_ENV: process.env.NODE_ENV,

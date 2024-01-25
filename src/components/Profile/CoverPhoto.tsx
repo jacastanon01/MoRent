@@ -23,9 +23,11 @@ const CoverPhoto = ({ user }: { user: User }) => {
 
     if (!targetFiles) return null;
     startTransition(async () => {
-      const res = await fetch(`/api/image?filename=${targetFiles.name}`, {
+      const formData = new FormData();
+      formData.append('file', targetFiles);
+      const res = await fetch(`/api/image?from=cover`, {
         method: 'POST',
-        body: targetFiles,
+        body: formData,
       });
       const uploadUrl = await res.json();
 

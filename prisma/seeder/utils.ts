@@ -92,7 +92,7 @@ const getRandomThumbnail = (make: CarMakes): string[] | undefined => {
   return carImages || [];
 };
 
-export const createCars = async () => {
+export const seedCarData = async () => {
   try {
     await db.car.deleteMany();
     const users: Pick<User, 'id'>[] = await db.user.findMany({
@@ -139,7 +139,7 @@ export const createCars = async () => {
             images,
             description,
             fuelEfficiency: faker.number.int({ min: 10, max: 40 }),
-            fuelEfficiencyUnits: fuelEfficiencyUnits as FuelEfficiencyUnits,
+            fuelEfficiencyUnit: fuelEfficiencyUnits as FuelEfficiencyUnits,
             rentPrice: getRandomNumByInterval(100, 1500, 50) ?? 500,
             capacity: faker.number.int({ min: 2, max: 6 }),
             color: String(getRandomFromArray(colors)),
