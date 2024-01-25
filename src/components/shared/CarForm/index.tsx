@@ -59,14 +59,13 @@ const CarForm = ({ carData }: { carData?: any }) => {
         } else {
           try {
             for (const uploadedFile of files) {
+              const formData = new FormData();
+              formData.append('file', uploadedFile.file as File);
               if (uploadedFile) {
-                const res = await fetch(
-                  `/api/image?filename=${uploadedFile.name}`,
-                  {
-                    method: 'POST',
-                    body: uploadedFile.file,
-                  },
-                );
+                const res = await fetch(`/api/image?from=car`, {
+                  method: 'POST',
+                  body: formData,
+                });
                 const uploadUrl = await res.json();
                 if (uploadUrl.message) {
                   errors.form = uploadUrl.message;
@@ -180,6 +179,7 @@ const CarForm = ({ carData }: { carData?: any }) => {
       lat: undefined,
       lng: undefined,
     }));
+    console.log(location, lat, lng);
     setLocation(location);
     setLat(lat.toString());
     setLng(lng.toString());

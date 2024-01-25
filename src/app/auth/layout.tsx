@@ -1,5 +1,9 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
+
 import LeftBackgroundImage from '@/components/Auth/Left';
+
+const FormCard = dynamic(() => import('@/components/Auth/FormCard'));
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,7 +15,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           {/* Right container with forms */}
           <section className='h-full flex-1'>
             <div className='flex justify-center rounded-b-lg bg-white p-6 shadow-md dark:bg-gray-850 md:rounded-lg'>
-              {children}
+              <FormCard className='p-4 md:p-8'>{children}</FormCard>
             </div>
           </section>
         </div>

@@ -1,7 +1,20 @@
-import PopularCarsSection from '@/components/HomePage/PopularCarsSection/PopularCarsSection';
-import RecommendedCarsSection from '@/components/HomePage/RecommendedCarsSection/RecommendedCarsSection';
-import TopSection from '@/components/HomePage/TopSection/TopSection';
-import HomeSearchBar from '@/components/HomePage/HomeSearch/HomeSearch';
+import dynamic from 'next/dynamic';
+
+const PopularCarsSection = dynamic(
+  () => import('@/components/HomePage/PopularCarsSection/PopularCarsSection'),
+);
+const RecommendedCarsSection = dynamic(
+  () =>
+    import(
+      '@/components/HomePage/RecommendedCarsSection/RecommendedCarsSection'
+    ),
+);
+const TopSection = dynamic(
+  () => import('@/components/HomePage/TopSection/TopSection'),
+);
+const HomeSearchBar = dynamic(
+  () => import('@/components/HomePage/HomeSearch/HomeSearch'),
+);
 
 export default function HomePage() {
   return (

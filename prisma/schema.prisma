@@ -2,16 +2,18 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-  url      = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum CarTypes {
@@ -48,8 +50,8 @@ model Car {
   color              String
   description        String
   rentPrice          Float
-  discountedPrice    Float?  @default(0)
-  year               Int?
+  discountedPrice    Float?               @default(0)
+  year               Int
   capacity           Int
   type               CarTypes
   transmission       Transmission?
@@ -57,14 +59,14 @@ model Car {
   fuelEfficiencyUnit FuelEfficiencyUnits?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime?            @updatedAt
-  addedBy            User                 @relation(fields: [addedById], references: [id], name: "addedByUser")
+  addedBy            User                 @relation(fields: [addedById], references: [id], name: "addedByUser", onDelete: Cascade)
   addedById          String
   images             String[]
   rentalHistory      Rental[]
   reviews            RentalReview[]
   favoritedBy        User[]               @relation("favoritedByUsers")
   locationId         Int
-  location           Location             @relation(fields: [locationId], references: [id])
+  location           Location             @relation(fields: [locationId], references: [id], onDelete: Restrict)
 
   @@index([make, model, year], name: "carOverview")
 }
@@ -141,7 +143,7 @@ model Location {
 
 model Rental {
   id             Int                @id @default(autoincrement())
-  car            Car                @relation(fields: [carId], references: [id])
+  car            Car                @relation(fields: [carId], references: [id], onDelete: Cascade)
   carId          Int
   rentedTo       User               @relation(fields: [userId], references: [id])
   userId         String
@@ -152,7 +154,7 @@ model Rental {
   endDate        DateTime           @db.Timestamptz()
   total          Float
   locationId     Int
-  pickUpLocation Location           @relation(fields: [locationId], references: [id])
+  pickUpLocation Location           @relation(fields: [locationId], references: [id], onDelete: Restrict)
   updatedAt      DateTime           @updatedAt
   createdAt      DateTime           @default(now())
 
@@ -164,7 +166,7 @@ model RentalReview {
   userId      String
   reviewedBy  User     @relation(fields: [userId], references: [id])
   carId       Int
-  car         Car      @relation(fields: [carId], references: [id])
+  car         Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
   rating      Float
   description String
   createdAt   DateTime @default(now())
