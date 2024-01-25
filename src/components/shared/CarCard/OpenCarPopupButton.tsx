@@ -42,7 +42,7 @@ const OpenCarPopupButton = ({
     }
   };
   const handleEditPopup = async () => {
-    // handle edit popup
+    router.push(`/edit-car/${id}`);
   };
   return (
     <div

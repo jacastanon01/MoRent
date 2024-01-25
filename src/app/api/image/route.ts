@@ -17,6 +17,7 @@ function generateURL(key: string) {
 export async function POST(request: Request) {
   const { searchParams } = new URL(request.url);
   const fromClient = searchParams.get('from');
+  const filename = searchParams.get('filename');
   const user = await getServerAuthSession();
 
   if (!user) throw Error('user not found');
@@ -37,10 +38,11 @@ export async function POST(request: Request) {
 
   const buffer = Buffer.from(await formFile.arrayBuffer());
 
-  if (request.body) {
+  if (filename && request.body) {
     const uniqueName = fromClient === 'car' ? uuidv4() : user.user.id;
-    const file = `${fromClient}-${uniqueName}`;
+    const file = `${fromClient}-${uniqueName}-${filename}`;
 
+    console.log({ file });
     const params: S3.PutObjectRequest = {
       Bucket: process.env.AWS_BUCKET_NAME!,
       Key: file,

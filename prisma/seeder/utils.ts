@@ -112,7 +112,7 @@ export const seedCarData = async () => {
             ? fuelUnits[0]
             : fuelUnits[1];
 
-          const description = faker.lorem.paragraphs();
+          const description = faker.lorem.sentences({ min: 1, max: 4 });
 
           const { make, model, images } = carBase;
 

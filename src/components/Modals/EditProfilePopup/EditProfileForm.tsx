@@ -22,10 +22,13 @@ const EditProfileForm = ({ user }: { user: User }) => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append('file', targetFiles);
-      const res = await fetch(`/api/image?from=avatar`, {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        `/api/image?filename=${targetFiles.name}&from=avatar`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
       const uploadUrl = await res.json();
 
       try {

@@ -25,10 +25,13 @@ const CoverPhoto = ({ user }: { user: User }) => {
     startTransition(async () => {
       const formData = new FormData();
       formData.append('file', targetFiles);
-      const res = await fetch(`/api/image?from=cover`, {
-        method: 'POST',
-        body: formData,
-      });
+      const res = await fetch(
+        `/api/image?filename=${targetFiles.name}&from=cover`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
       const uploadUrl = await res.json();
 
       await updateUser({ coverImage: uploadUrl.url });

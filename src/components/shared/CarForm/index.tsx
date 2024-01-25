@@ -22,7 +22,7 @@ const CarForm = ({ carData }: { carData?: any }) => {
   const action = carData ? 'Update' : 'Add';
   const [formState, setFormState] = useState<NewCarFormType>({
     ...carData,
-    carType: carData?.carType,
+    carType: carData?.type,
     year: carData?.year.toString(),
     fuelEfficiency: carData?.fuelEfficiency.toString(),
     capacity: carData?.capacity.toString(),
