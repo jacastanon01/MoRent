@@ -1,23 +1,24 @@
 'use client';
 
 import { removeCarById } from '@/lib/actions/cars';
-import { useRouter } from 'next/navigation';
 import React, { useTransition } from 'react';
 
 const TrashIconClient = ({ carId }: { carId: number }) => {
   const [isPending, startTransition] = useTransition();
-  const router = useRouter();
-  function handleClick() {
+
+  function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.stopPropagation();
     startTransition(async () => {
       await removeCarById(carId);
     });
-    router.refresh();
   }
 
   return (
     <button
       disabled={isPending}
-      className={`ml-1 shadow-sm ${!isPending && 'cursor-pointer'}`}
+      className={`ml-1 animate-pulse bg-transparent shadow-sm ${
+        !isPending && 'animate-none cursor-pointer'
+      }`}
       onClick={!isPending ? handleClick : undefined}
     >
       <svg

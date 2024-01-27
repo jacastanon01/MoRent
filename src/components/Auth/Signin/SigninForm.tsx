@@ -16,7 +16,7 @@ const SigninForm = () => {
   const [formErrors, setFormErrors] = useState<SigninFormType>({});
   const router = useRouter();
 
-  async function handleSubmit(e: React.FormEvent<HTMLElement>) {
+  async function handleSignin(e: React.FormEvent<HTMLElement>) {
     e.preventDefault();
 
     const validatedInput = LoginSchema.safeParse({
@@ -54,6 +54,7 @@ const SigninForm = () => {
     startTransition(async () => {
       try {
         await signIn('google', { callbackUrl: '/' });
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       } catch (e: any) {
         setFormErrors((prevState) => ({
           ...prevState,
@@ -68,7 +69,7 @@ const SigninForm = () => {
 
   return (
     <>
-      <form className='flex w-full flex-col gap-[25px]' onSubmit={handleSubmit}>
+      <form className='flex w-full flex-col gap-[25px]' onSubmit={handleSignin}>
         {formErrors.form && <SigninError errorMessage={formErrors.form} />}
         {['email', 'password'].map((item) => (
           <FormInput key={item} formKey={item} {...stateProps} />
