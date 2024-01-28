@@ -54,7 +54,7 @@ const SigninForm = () => {
     startTransition(async () => {
       try {
         await signIn('google', { callbackUrl: '/' });
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise((resolve) => setTimeout(resolve, 4000));
       } catch (e: any) {
         setFormErrors((prevState) => ({
           ...prevState,

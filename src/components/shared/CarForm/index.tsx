@@ -61,12 +61,17 @@ const CarForm = ({ carData }: { carData?: any }) => {
             for (const uploadedFile of files) {
               const formData = new FormData();
               formData.append('file', uploadedFile.file as File);
+
               if (uploadedFile) {
-                const res = await fetch(`/api/image?from=car`, {
-                  method: 'POST',
-                  body: formData,
-                });
+                const res = await fetch(
+                  `/api/image?filename=${uploadedFile.name}&from=car`,
+                  {
+                    method: 'POST',
+                    body: formData,
+                  },
+                );
                 const uploadUrl = await res.json();
+
                 if (uploadUrl.message) {
                   errors.form = uploadUrl.message;
                 }

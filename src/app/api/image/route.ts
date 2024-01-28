@@ -42,7 +42,6 @@ export async function POST(request: Request) {
     const uniqueName = fromClient === 'car' ? uuidv4() : user.user.id;
     const file = `${fromClient}-${uniqueName}-${filename}`;
 
-    console.log({ file });
     const params: S3.PutObjectRequest = {
       Bucket: process.env.AWS_BUCKET_NAME!,
       Key: file,
