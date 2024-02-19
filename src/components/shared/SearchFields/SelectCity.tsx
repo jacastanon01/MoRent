@@ -7,12 +7,14 @@ import MarkIcon from './MarkIcon';
 
 export function SelectCity({
   location,
+  labelClassName,
   className,
   disabled,
   errorMessage,
   handleLocationChange,
 }: {
   location: string;
+  labelClassName?: string;
   className?: string;
   disabled?: boolean;
   errorMessage?: string;
@@ -23,7 +25,12 @@ export function SelectCity({
       className={cn('flex  w-full flex-col text-sm sm:text-base', className)}
     >
       <div className='flex flex-col gap-[10px] sm:gap-3'>
-        <label className='flex items-center gap-2 text-sm font-medium capitalize tracking-wide'>
+        <label
+          className={cn(
+            'flex items-center gap-2 text-sm font-medium capitalize tracking-wide',
+            labelClassName,
+          )}
+        >
           <MarkIcon />
           Location:
         </label>

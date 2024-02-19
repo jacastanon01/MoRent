@@ -235,6 +235,7 @@ const CarForm = ({ carData }: { carData?: any }) => {
             errorMessage={
               formErrors.location || formErrors.lat || formErrors.lng
             }
+            labelClassName='text-base font-bold capitalize tracking-wide'
             className='md:col-span-2 xl:col-span-1'
           />
         )}
