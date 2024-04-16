@@ -1,43 +1,41 @@
-# Overview
-We're a stealth startup, secretly working on an engaging project while avoiding public attention to reach the market first. We’re looking for a team of developers that can develop a modern car renting application.
 
-The chosen team of developers has to help develop the application’s frontend and backend. Our team of designers has already created a high-fidelity Figma design. Follow the design and get the final website to look as close to the design as possible.
+![project](https://github.com/jacastanon01/MoRent/assets/24418510/b5d5123d-cff7-4868-bc2f-f523dceb1381)
+
+# Overview
+This project is part of the JSM Masterclass experience, where my partner and I built and presented an MVP for a car-renting application. We were tasked with creating a web application for a hypothetical client and given a figma design for the UI as well as functional requirements. 
+
+With MoRent, you can search for cars in your area to rent for a weekend or even list your own car and make some extra income! Payments are handled using the Stripe api to make renting out a car a seamless experience. 
 
 # Technologies
 ## Client-side
-- React.js / Next.js
-## Libraries
-- You may use any libraries you might need in your code (Clerk)
-- You may also use any UI kit you prefer (Material UI, Tailwind, CSS)
+- Next.js
+- NextAuth
+- TailwindCSS
+- ShadCn
+- Zod for client and server side validation
+- Framer motion
 
 ## Server-side
-- Option 1) Node.js, Express.js and MongoDB
-- Option 2) Next.js Server Actions and API Routes
-- Option 3) BaaS (Backend-as-a-Service) tool: Supabase, Firebase, etc.
+- Utilizes Nextjs server actions
+- Prisma to interact with database
+- PostgreSQL database is hosted with [neon](https://neon.tech)
+- AWS S3 Bucket to store images
 
 # Functionalities
-The application needs to have the following functionalities:
 - **Homepage** - Consisting of a banner of highlighted cars to rent, pickup and dropoff pickers, and a list of vehicles available for rent.
+- **Signin/Signup Page** - Fully integrated with NextAuth to create a new user with an email/password combination or google account
 - **All Cars Page** - List of vehicles, search, a sidebar with filtering functionality
-- **Car Details Page** - Consisting of additional car details, such as images, title, brand, price, and a list of other recommended cars available for rent.
-- **Add a Car Page** -  Add car details (images, title, brand, price) through a form. After submission, the car should appear on the home page
-- **Car Rent Page (optional)** - Clicking on “Rent Now” utilizes Stripe’s payment functionalities and redirects to a Stripe-powered checkout page.
-- **User page** - Displays a list of cars rented by the user and cars put for rent by the user.
+- **Car Details Popup** - Consisting of additional car details, such as images, title, brand, price, and a list of other recommended cars available for rent.
+- **Add a Car Page** -  Add car details (images, title, brand, price) through a form. After submission, the car should appear on the home page and user profile
+- **Car Rent Page** - After selecting dates to rent car, user redirects to a Stripe-powered checkout page which utilizes Stripe’s payment functionalities.
+- **User Profile page** - Displays a list of cars rented by the user and cars put for rent by the user as well as the ability to customize avatar and cover photo
 
-# Bonus Points
-Bonus points for:
-- **Payments** - Use Stripe to handle payments
-- **Exceptional Design Consistency** - Follow the design 100%
-- **Alerts** - Develop modals and alerts to handle errors and notifications.
-- **Add Car to Favorite Functionality** - Use local storage to save favorited cars.
-- **Clean Code** - We cannot emphasize enough how important this is! Keep the code clean and use as many React best practices as possible.
+### Challenges/Process:
+My role was planning out the database hosting and design the schema to dictate the data-flow of the application. We opted to use NextJS for the frontend and utilized vercel to host our deployed site. A consistent UI was maintained using our custom re-usable components and shadcn. Zod was used for client and server-side validation and we were able to to ensure type-safety with our prisma schema when interacting with our PostgreSQL database. 
 
-# Timeframe, Team, and Budget
-The MVP needs to be ready in one month, which should be more than enough, considering you’ll work in a team of 2-5 people.
+One of the features was to allow users the option to sign up using google or create a fresh account with us. Since we used Next-Auth, this required some configuration on my end to allow us to store a user in the DB and link their google account to an Account model. I wanted to utilize Json Web Tokens to authorize a user's session in the browser instead of having to store and refresh tokens periodically and opted to still use the JWT strategy when it came to our auth process. 
 
-We’ll have weekly reports where you can update us on the process.
+I also learned a lot about image optimization and blob storage. You can upload any image for your profile picture, cover photo and add up to ten cars for the car you want to list. Images are stored in an AWS S3 bucket to handle the storage so the retrieval from the client is fast and reliable. To make our repository as DRY as possible, one of the challenges was communicating with my partner to make sure we were not stepping on each other's toes or building out new components if we didn't need to. This led to a total refactor for the forms, inputs and modals early on to ensure an organized file structure. 
 
-Good luck!
-
-Adrian, Founder, and CEO
-JavaScript Mastery
+### What I learned:
+After a month of diving into using these new technologies, my partner and I were able to deploy a web application that can be used world-wide. My hope is to use my learning from this comprehensive project to contribute to more web applications in the future. 
